@@ -10,7 +10,10 @@
     <div class="container">
         <h1>Select Your Role</h1>
         <div class="button-group">
-            <a href="{{ url_for('patient_home') }}">
+            <a href="{{ url_for('patient_register') }}">
+                <button>Register as Patient</button>
+            </a>
+            <a href="{{ url_for('patient_login') }}">
                 <button>Login as Patient</button>
             </a>
             <a href="{{ url_for('doctor_register') }}">

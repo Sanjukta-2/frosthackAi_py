@@ -14,8 +14,13 @@ from pymongo import MongoClient
 from pymongo.errors import PyMongoError  # Add this
 from flask_cors import CORS
 from urllib.parse import quote, unquote
+from werkzeug.security import generate_password_hash, check_password_hash
+import bcrypt
+
 
 app = Flask(__name__)
+
+app.secret_key = os.urandom(24) 
 
 CORS(app)
 # MongoDB connection
@@ -23,6 +28,7 @@ client = MongoClient("mongodb+srv://mahikaroy2004:YZi4loEfL43HimUB@clustor0.66sf
 db = client["medical_app"]
 doctors_collection = db["doctors"]
 appointments_collection = db["appointments"]
+patients_collection = db["patients"]
 
 # Add an empty list for ratings if it doesn't exist
 doctors_collection.update_many({}, {"$set": {"ratings": []}}, upsert=False)
@@ -60,12 +66,49 @@ except Exception as e:
 @app.route('/')
 def select_user():
     return render_template('login.html')
+# Patient Login
+@app.route("/patient_login", methods=["GET"])
+def patient_login_page():
+    return render_template("patient_login.html")
+
+
+@app.route('/patient_login', methods=['GET', 'POST'])
+def patient_login():
+    if request.method == 'POST':
+        data = request.json
+        email = data.get("email")
+        password = data.get("password")
+        
+        patient = client.db.patients_collection.find_one({"email": email})
+        if patient and check_password_hash(patient["password"], password):
+            session['patient_id'] = str(patient['_id'])
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False, "message": "Invalid email or password"})
+    return render_template('patient_login.html')
+
+
+@app.route('/patient_register', methods=['GET', 'POST'])
+def patient_register():
+    if request.method == 'POST':
+        data = request.json
+        name = data.get("name")
+        email = data.get("email")
+        password = data.get("password")
+        
+        if client.db.patients_collection.find_one({"email": email}):
+            return jsonify({"success": False, "message": "Email already exists"})
+        
+        hashed_password = generate_password_hash(password)
+        client.db.patients_collection.insert_one({"name": name, "email": email, "password": hashed_password})
+        return jsonify({"success": True})
+    return render_template('patient_register.html')
+
 
 # Patient Home Page
 @app.route('/patient_home')
 def patient_home():
     return render_template('patient_home.html')
-
 
 # Doctor Registration Page
 @app.route('/doctor_register', methods=['GET', 'POST'])
@@ -357,7 +400,7 @@ def video_meet(room_id):
         if not appointment:
             return render_template("error.html", message="Invalid meeting ID")
 
-        return render_template("Web_UIKITS(1).html", room_id=room_id)
+        return render_template("web_uikit_1.html", room_id=room_id)
     except Exception as e:
         print(f"Video meet error: {str(e)}\n{traceback.format_exc()}")
         return render_template("error.html", message="Failed to initialize meeting")
