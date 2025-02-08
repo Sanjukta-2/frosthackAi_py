@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Consultation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='doctor_consultation.css') }}">
+    <style>
+        .doctor-list {
+            display: grid;
+            gap: 20px;
+            padding: 20px;
+        }
+        .doctor-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .booking-form {
+            margin-top: 10px;
+        }
+        .time-slot {
+            margin: 10px 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book a Consultation</h1>
+    <div class="doctor-list">
+        {% for doctor in doctors %}
+        <div class="doctor-card">
+            <h2>{{ doctor.name }}</h2>
+            <p>Email: {{ doctor.email }}</p>
+            {% if doctor.specialization %}
+            <p>Specialization: {{ doctor.specialization }}</p>
+            {% endif %}
+            
+            <div class="booking-form">
+                <form onsubmit="event.preventDefault(); bookAppointment(this)">
+                    <input type="hidden" name="doctor_name" value="{{ doctor.name }}">
+                    
+                    <label>Select Time Slot:</label>
+                    <select name="selected_time" class="time-slot">
+                        {% for time in doctor.available_times %}
+                        <option value="{{ time }}">{{ time }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <label>Your Email:</label>
+                    <input type="email" name="patient_email" required placeholder="Enter your email">
+                    
+                    <button type="submit">Book Appointment</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-doctors">
+            <p>No doctors available at the moment.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div id="response" style="text-align: center; margin-top: 20px; color: #555;"></div>
+    <div class="meeting-section" id="meetingSection" style="display: none;">
+        <h3>Your Scheduled Meeting</h3>
+        <p id="meetingDetails"></p>
+        <button class="meeting-button" id="startMeetingBtn">Join Meeting Now</button>
+    </div>
+    
+    <script>
+        function handleBookingResponse(response) {
+            if (response.message) {
+                // Show meeting section
+                document.getElementById('meetingSection').style.display = 'block';
+                document.getElementById('meetingDetails').innerHTML = `
+                    Meeting with: ${response.doctor_name}<br>
+                    Time: ${response.time}<br>
+                    Status: ${response.status}
+                `;
+                
+                // Setup meeting button
+                document.getElementById('startMeetingBtn').onclick = () => {
+                    window.open(response.meet_link, '_blank');
+                };
+            }
+        }
+
+
+        function bookAppointment(form) {
+            const formData = new FormData(form);
+            const data = {
+                doctor_name: formData.get('doctor_name'),
+                selected_time: formData.get('selected_time'),
+                patient_email: formData.get('patient_email')
+            };
+
+            fetch("/book_appointment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.meet_link) {
+                    handleBookingResponse({
+                        ...result,
+                        doctor_name: data.doctor_name,
+                        time: data.selected_time,
+                        status: 'Booked'
+                    });
+                }
+                const responseDiv = document.getElementById('response');
+                if (result.message) {
+                    responseDiv.style.color = 'green';
+                    responseDiv.textContent = result.message;
+                    // Remove booked time from dropdown
+                    const option = form.querySelector(`option[value="${data.selected_time}"]`);
+                    if (option) option.remove();
+                } else {
+                    responseDiv.style.color = 'red';
+                    responseDiv.textContent = result.error || 'Failed to book appointment';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response').textContent = 'An error occurred. Please try again.';
+            });
+        }
+    </script>
+</body>
+</html>

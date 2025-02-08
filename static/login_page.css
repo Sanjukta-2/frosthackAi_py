@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Full-screen flexbox centering */
+body {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #74ebd5, #acb6e5);
+}
+
+/* Container styling */
+.container {
+    text-align: center;
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 350px;
+}
+
+/* Heading */
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Button container */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* General button styling */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+/* Patient button */
+button:first-child {
+    background: #007BFF;
+}
+
+button:first-child:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Doctor button */
+button:last-child {
+    background: #28a745;
+}
+
+button:last-child:hover {
+    background: #218838;
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 30px;
+    }
+}

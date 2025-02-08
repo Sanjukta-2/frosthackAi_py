@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaded Image and Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: rgb(114, 114, 221);
+        }
+
+        h1 {
+            color: #fff;
+        }
+
+        .upload-container {
+            margin-top: 20px;
+        }
+
+        .upload-container input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .image-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #prediction-result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Upload an Ultrasound Image</h1>
+
+    <div class="upload-container">
+        <input type="file" id="imageUpload" accept="image/*">
+        <button id="submitBtn" disabled>Analyze Image</button>
+    </div>
+
+    <div class="image-container" id="imageContainer">
+        <img id="uploadedImage" src="" alt="Uploaded Image">
+    </div>
+
+    <div id="prediction-result"></div>
+
+
+
+    <script>
+        const imageUpload = document.getElementById("imageUpload");
+        const submitBtn = document.getElementById("submitBtn");
+        const predictionResult = document.getElementById("prediction-result");
+
+        imageUpload.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    document.getElementById('uploadedImage').src = e.target.result;
+                    document.getElementById('imageContainer').style.display = "block";
+                    submitBtn.disabled = false;
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        submitBtn.addEventListener("click", async function () {
+            if (!imageUpload.files[0]) return;
+
+            const formData = new FormData();
+            formData.append("file", imageUpload.files[0]);
+
+            try {
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    predictionResult.innerHTML = `Error: ${data.error}`;
+                    predictionResult.style.color = "red";
+                } else {
+                    predictionResult.innerHTML = `
+                    Organ: ${data.organ}<br>
+                    Diagnosis: ${data.classification}
+                `;
+                    predictionResult.style.color = "white";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                predictionResult.innerHTML = "Error processing image";
+                predictionResult.style.color = "red";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

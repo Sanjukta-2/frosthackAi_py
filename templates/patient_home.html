@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Ultrasound Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">Disease Predict</a>
+            <ul class="nav-menu">
+                <li><a href="#about">About Us</a></li>
+                <li><a href="{{ url_for('ml_detection') }}">Upload Image</a></li>
+                <li><a href="{{ url_for('doctor_consultation') }}">Consult a Doctor</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>Welcome to the Ultrasound Application</h1>
+            <p>Your Health, Our Priority. Get the best solution from us.</p>
+            <a href="#about" class="btn">Learn More</a>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>Our platform leverages cutting-edge technology to provide insights into potential health risks based on uploaded ultrasound images. By analyzing symptoms and patterns, we help you take proactive measures.</p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Our Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Symptom Checker</h3>
+                    <p>Analyze symptoms to predict possible health conditions.</p>
+                </div>
+                <div class="feature">
+                    <h3>AI-Based Insights</h3>
+                    <p>Advanced AI algorithms for accurate predictions.</p>
+                </div>
+                <div class="feature">
+                    <h3>Personalized Reports</h3>
+                    <p>Custom reports to track and understand your health.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Start?</h2>
+            <p>Upload an image for analysis or consult with a doctor instantly.</p>
+            <a href="{{ url_for('ml_detection') }}" class="btn">Upload Image</a>
+            <a href="{{ url_for('doctor_consultation') }}" class="btn">Consult a Doctor</a>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Ultrasound Disease Prediction & Detection. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='doctorresgister.css') }}">
+    <style>
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .slot-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .slot-option input {
+            margin-right: 10px;
+        }
+        .submit-btn {
+            background-color: #1abc9c;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #16a085;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Doctor Registration</h2>
+        <form method="POST" action="/doctor_register">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Specialization:</label>
+                <input type="text" name="specialization">
+            </div>
+
+            <div class="form-group">
+                <label>Available Time Slots (IST):</label>
+                <div class="time-slots">
+                    <label class="slot-option">
+                        <input type="checkbox" name="available_times" value="9am-10am">
+                        9:00 AM - 10:00 AM
+                    </label>
+                    <label class="slot-option">
+                        <input type="checkbox" name="available_times" value="11am-12pm">
+                        11:00 AM - 12:00 PM
+                    </label>
+                    <label class="slot-option">
+                        <input type="checkbox" name="available_times" value="2pm-3pm">
+                        2:00 PM - 3:00 PM
+                    </label>
+                    <label class="slot-option">
+                        <input type="checkbox" name="available_times" value="4pm-5pm">
+                        4:00 PM - 5:00 PM
+                    </label>
+                    <label class="slot-option">
+                        <input type="checkbox" name="available_times" value="6pm-7pm">
+                        6:00 PM - 7:00 PM
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Complete Registration</button>
+        </form>
+    </div>
+</body>
+</html>

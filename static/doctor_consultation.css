@@ -1,0 +1,193 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+/* Page Title */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
+}
+
+/* Doctor List Container */
+.doctor-list {
+    max-height: 70vh;
+    overflow-y: auto;
+    margin: 20px auto;
+    width: 80%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Individual Doctor Card */
+.doctor-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fafafa;
+    transition: transform 0.2s;
+}
+
+.doctor-card:hover {
+    transform: scale(1.02);
+}
+
+/* Doctor Image */
+.doctor-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+/* Doctor Information */
+.doctor-info {
+    flex: 1;
+}
+
+.doctor-info h3 {
+    margin: 0 0 10px 0;
+    color: #007bff;
+}
+
+/* Time Slot Dropdown */
+.time-slot {
+    margin-top: 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Book Appointment & Start Meeting Buttons */
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Start Meeting Button */
+.start-meeting-btn {
+    background-color: #007bff;
+}
+
+.start-meeting-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Booking Confirmation Message */
+#response {
+    text-align: center;
+    margin-top: 20px;
+    color: #555;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Centered Start Video Call Button */
+.start-call-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.start-call-container button {
+    background-color: blue;
+    padding: 12px 25px;
+    font-size: 18px;
+}
+
+.start-call-container button:hover {
+    background-color: darkblue;
+}
+
+/* Scrollbar for Doctor List */
+.doctor-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.doctor-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.doctor-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.doctor-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.doctor-card {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.booking-form input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    background: #1abc9c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background: #16a085;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+    .doctor-list {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .doctor-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .doctor-card img {
+        margin-bottom: 10px;
+    }
+
+    .doctor-info {
+        width: 100%;
+    }
+}
