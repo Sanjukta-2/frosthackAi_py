@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Doctor Consultation</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='doctor_consultation.css') }}">
@@ -10,39 +9,33 @@
             gap: 20px;
             padding: 20px;
         }
-
         .doctor-card {
             border: 1px solid #ddd;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
         .booking-form {
             margin-top: 10px;
         }
-
         .time-slot {
             margin: 10px 0;
             padding: 5px;
         }
-
         .stars {
             cursor: pointer;
             color: gray;
         }
-
         .stars .star {
             font-size: 24px;
         }
-
         .stars .star:hover,
         .stars .star.active {
             color: gold;
         }
+
     </style>
 </head>
-
 <body>
     <h1>Book a Consultation</h1>
     <div class="doctor-list">
@@ -57,26 +50,25 @@
                 <p>Rating: <span id="avg-rating-{{ doctor.email }}">{{ doctor.average_rating|default(0) }}</span>/5</p>
                 <div class="stars">
                     {% for i in range(1, 6) %}
-                    <span class="star" data-value="{{ i }}"
-                        onclick="submitRating('{{ doctor.email }}', '{{ i }}')">★</span>
+                    <span class="star" data-value="{{ i }}" onclick="submitRating('{{ doctor.email }}', '{{ i }}')">★</span>
                     {% endfor %}
                 </div>
             </div>
-
+            
             <div class="booking-form">
                 <form onsubmit="event.preventDefault(); bookAppointment(this)">
                     <input type="hidden" name="doctor_name" value="{{ doctor.name }}">
-
+                    
                     <label>Select Time Slot:</label>
                     <select name="selected_time" class="time-slot">
                         {% for time in doctor.available_times %}
                         <option value="{{ time }}">{{ time }}</option>
                         {% endfor %}
                     </select>
-
+                    
                     <label>Your Email:</label>
                     <input type="email" name="patient_email" required placeholder="Enter your email">
-
+                    
                     <button type="submit">Book Appointment</button>
                 </form>
             </div>
@@ -90,11 +82,11 @@
 
     <div id="response" style="text-align: center; margin-top: 20px; color: #555;"></div>
     <div class="meeting-section" id="meetingSection" style="display: none;">
-        <h3>Your Scheduled Meeting</h3>
+      <h3>Your Scheduled Meeting</h3>
         <p id="meetingDetails"></p>
         <button class="meeting-button" id="startMeetingBtn">Join Meeting Now</button>
     </div>
-
+    
     <script>
         function handleBookingResponse(response) {
             if (response.message) {
@@ -105,7 +97,7 @@
                     Time: ${response.time}<br>
                     Status: ${response.status}
                 `;
-
+                
                 // Setup meeting button
                 document.getElementById('startMeetingBtn').onclick = () => {
                     window.open(response.meet_link, '_blank');
@@ -113,23 +105,23 @@
             }
         }
 
-
+        
         function submitRating(doctorEmail, rating) {
             fetch('/submit_rating', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ doctor_email: doctorEmail, rating: rating })
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById(`avg-rating-${doctorEmail}`).innerText = data.new_avg;
-                        alert("Thank you for rating!");
-                    } else {
-                        alert("Error submitting rating.");
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`avg-rating-${doctorEmail}`).innerText = data.new_avg;
+                    alert("Thank you for rating!");
+                } else {
+                    alert("Error submitting rating.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
 
 
@@ -148,34 +140,33 @@
                 },
                 body: JSON.stringify(data)
             })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.meet_link) {
-                        handleBookingResponse({
-                            ...result,
-                            doctor_name: data.doctor_name,
-                            time: data.selected_time,
-                            status: 'Booked'
-                        });
-                    }
-                    const responseDiv = document.getElementById('response');
-                    if (result.message) {
-                        responseDiv.style.color = 'green';
-                        responseDiv.textContent = result.message;
-                        // Remove booked time from dropdown
-                        const option = form.querySelector(`option[value="${data.selected_time}"]`);
-                        if (option) option.remove();
-                    } else {
-                        responseDiv.style.color = 'red';
-                        responseDiv.textContent = result.error || 'Failed to book appointment';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('response').textContent = 'An error occurred. Please try again.';
-                });
+            .then(response => response.json())
+            .then(result => {
+                if (result.meet_link) {
+                    handleBookingResponse({
+                        ...result,
+                        doctor_name: data.doctor_name,
+                        time: data.selected_time,
+                        status: 'Booked'
+                    });
+                }
+                const responseDiv = document.getElementById('response');
+                if (result.message) {
+                    responseDiv.style.color = 'green';
+                    responseDiv.textContent = result.message;
+                    // Remove booked time from dropdown
+                    const option = form.querySelector(`option[value="${data.selected_time}"]`);
+                    if (option) option.remove();
+                } else {
+                    responseDiv.style.color = 'red';
+                    responseDiv.textContent = result.error || 'Failed to book appointment';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response').textContent = 'An error occurred. Please try again.';
+            });
         }
     </script>
 </body>
-
 </html>

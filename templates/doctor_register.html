@@ -4,36 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Registration</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='doctorresgister.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='doctorregistercss') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Form Container */
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        /* Form Group */
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #6a11cb;
+            outline: none;
+            box-shadow: 0px 0px 8px rgba(106, 17, 203, 0.2);
+        }
+
+        /* Time Slots */
         .time-slots {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin: 15px 0;
         }
+
         .slot-option {
             display: flex;
             align-items: center;
             padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 6px;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
+
+        .slot-option:hover {
+            background: #e8e8e8;
+            transform: scale(1.03);
+        }
+
         .slot-option input {
             margin-right: 10px;
         }
+
+        /* Submit Button */
         .submit-btn {
-            background-color: #1abc9c;
+            background: linear-gradient(to right, #1abc9c, #16a085);
             color: white;
-            padding: 12px 25px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
         }
+
         .submit-btn:hover {
-            background-color: #16a085;
+            background: linear-gradient(to right, #16a085, #0f7355);
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -43,17 +131,17 @@
         <form method="POST" action="/doctor_register">
             <div class="form-group">
                 <label>Name:</label>
-                <input type="text" name="name" required>
+                <input type="text" name="name" required placeholder="Enter your full name">
             </div>
             
             <div class="form-group">
                 <label>Email:</label>
-                <input type="email" name="email" required>
+                <input type="email" name="email" required placeholder="Enter your email">
             </div>
 
             <div class="form-group">
                 <label>Specialization:</label>
-                <input type="text" name="specialization">
+                <input type="text" name="specialization" placeholder="Your specialization">
             </div>
 
             <div class="form-group">
